@@ -2,8 +2,11 @@
 
 윈도우 API의 대표적인 함수로 윈도우 프로시저(WndProc)가 있으며 WndProc의 구성요소는 각각의 이벤트 처리를 담당하는 WM(Window Message)가 있다.
 WndProc : 윈도우에서 메시지 처리를 담당하는 콜백 함수이다.
-콜백 : 함수 포인터를 이용해 다른 함수가 대신 역할을 수행하게 해준다. 함수에 대한 포인터를 담은후 특정 조건(유니티의 Trigger와 같은)이 발생되면 포인터로 해당 함수를 실행하게 하는 이벤트 발생이다.
+콜백 : 함수 포인터를 이용해 다른 함수가 대신 역할을 수행하게 해준다. 함수에 대한 포인터를 담은 후 특정 조건(유니티의 Trigger와 같은)이 발생되면 포인터로 해당 함수를 실행하게 하는 이벤트 발생이다.
 WM : 이벤트 처리를 담당하는 기능으로 WM_CREATE, WM_COMMAND, WM_PAINT, WM_DESTROY가 있으며 각각 CRUD를 담당한다.(switch에서 각각의 case 분기로 이를 실행한다)
+
+WinAPI 내부에서는 while 반복문으로 메시지를 받을 준비를 한다.(상호작용을 위해 이용자의 입력에 반응하는 형태이기 때문에) 이때 조건에 따른 이벤트가 발생되면 콜백으로 함수를 실행을 반복하며 Destroy(Post Quit Message)를 호출하게 되면 while 문 종료와 함께 API가 종료되는 구조이다.
+때문에 이용자의 행동을 기다리며 해당 이벤트 발생이 제 역할이기 때문에 정적보다는 동적의 성격을 띠고 있다.
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
