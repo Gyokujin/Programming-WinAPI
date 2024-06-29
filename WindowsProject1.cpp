@@ -1,9 +1,6 @@
-﻿// WindowsProject1.cpp : 애플리케이션에 대한 진입점을 정의합니다.
-//
-
-#include "framework.h"
+﻿#include "framework.h"
 #include "WindowsProject1.h"
-
+#include <windows.h>
 #define MAX_LOADSTRING 100
 
 // 전역 변수:
@@ -11,7 +8,6 @@ HINSTANCE hInst;                                // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
 
-// 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
@@ -55,13 +51,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     return (int) msg.wParam;
 }
 
-
-
-//
-//  함수: MyRegisterClass()
-//
-//  용도: 창 클래스를 등록합니다.
-//
 ATOM MyRegisterClass(HINSTANCE hInstance)
 {
     WNDCLASSEXW wcex;
@@ -83,22 +72,12 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     return RegisterClassExW(&wcex);
 }
 
-//
-//   함수: InitInstance(HINSTANCE, int)
-//
-//   용도: 인스턴스 핸들을 저장하고 주 창을 만듭니다.
-//
-//   주석:
-//
-//        이 함수를 통해 인스턴스 핸들을 전역 변수에 저장하고
-//        주 프로그램 창을 만든 다음 표시합니다.
-//
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
 
    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+      CW_USEDEFAULT, 0, 335, 480, nullptr, nullptr, hInstance, nullptr);
 
    if (!hWnd)
    {
@@ -111,31 +90,63 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    return TRUE;
 }
 
-//
-//  함수: WndProc(HWND, UINT, WPARAM, LPARAM)
-//
-//  용도: 주 창의 메시지를 처리합니다.
-//
-//  WM_COMMAND  - 애플리케이션 메뉴를 처리합니다.
-//  WM_PAINT    - 주 창을 그립니다.
-//  WM_DESTROY  - 종료 메시지를 게시하고 반환합니다.
-//
-//
+void HandleButtonClick(HWND hWnd, int buttonId) // const wchar_t* buttonText
+{
+    wchar_t message[50];
+    swprintf_s(message, 50, L"Button %d clicked", buttonId);
+    MessageBox(hWnd, message, L"Button Clicked", MB_OK);
+}
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
-    case WM_CREATE:
-        CreateWindow(TEXT("button"), TEXT("Click me"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 20, 20, 100, 25, hWnd, (HMENU)0, hInst, NULL);
+    case WM_GETMINMAXINFO: // 창의 최소 크기와 최대 크기를 미리 정한다.
+        {
+            MINMAXINFO* mmi = (MINMAXINFO*)lParam;
+            mmi->ptMinTrackSize.x = 335;
+            mmi->ptMinTrackSize.y = 480;
+            mmi->ptMaxTrackSize.x = 335;
+            mmi->ptMaxTrackSize.y = 480;
+        }
         break;
+
+    case WM_CREATE:
+        CreateWindow(TEXT("button"), TEXT("0"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 0, 350, 80, 70, hWnd, (HMENU)0, hInst, NULL);
+        CreateWindow(TEXT("button"), TEXT("1"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 0, 280, 80, 70, hWnd, (HMENU)1, hInst, NULL);
+        CreateWindow(TEXT("button"), TEXT("2"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 80, 280, 80, 70, hWnd, (HMENU)2, hInst, NULL);
+        CreateWindow(TEXT("button"), TEXT("3"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 160, 280, 80, 70, hWnd, (HMENU)3, hInst, NULL);
+        CreateWindow(TEXT("button"), TEXT("4"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 0, 210, 80, 70, hWnd, (HMENU)4, hInst, NULL);
+        CreateWindow(TEXT("button"), TEXT("5"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 80, 210, 80, 70, hWnd, (HMENU)5, hInst, NULL);
+        CreateWindow(TEXT("button"), TEXT("6"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 160, 210, 80, 70, hWnd, (HMENU)6, hInst, NULL);
+        CreateWindow(TEXT("button"), TEXT("7"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 0, 140, 80, 70, hWnd, (HMENU)7, hInst, NULL);
+        CreateWindow(TEXT("button"), TEXT("8"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 80, 140, 80, 70, hWnd, (HMENU)8, hInst, NULL);
+        CreateWindow(TEXT("button"), TEXT("9"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 160, 140, 80, 70, hWnd, (HMENU)9, hInst, NULL);
+        CreateWindow(TEXT("button"), TEXT("="), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 80, 350, 160, 70, hWnd, (HMENU)0, hInst, NULL);
+        CreateWindow(TEXT("button"), TEXT("+"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 240, 350, 80, 70, hWnd, (HMENU)0, hInst, NULL);
+        CreateWindow(TEXT("button"), TEXT("-"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 240, 280, 80, 70, hWnd, (HMENU)0, hInst, NULL);
+        CreateWindow(TEXT("button"), TEXT("x"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 240, 210, 80, 70, hWnd, (HMENU)0, hInst, NULL);
+        CreateWindow(TEXT("button"), TEXT("%"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 240, 140, 80, 70, hWnd, (HMENU)0, hInst, NULL);
+        break;
+
     case WM_COMMAND:
         {
-            int wmId = LOWORD(wParam);
+            // int wmId = LOWORD(wParam);
             // 메뉴 선택을 구문 분석합니다:
-            switch (wmId)
+            switch ()
             {
             case 0:
-                MessageBox(hWnd, TEXT("First Button Clicked"), TEXT("Button"), MB_OK);
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+                int wmId = LOWORD(WPARAM);
+                HandleButtonClick(wParam, wmId);
                 break;
             case IDM_ABOUT:
                 DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
@@ -148,6 +159,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             }
         }
         break;
+
     case WM_PAINT:
         {
             PAINTSTRUCT ps;
@@ -156,12 +168,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             EndPaint(hWnd, &ps);
         }
         break;
+
     case WM_DESTROY:
         PostQuitMessage(0);
         break;
+
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
     }
+
     return 0;
 }
 
